@@ -1,9 +1,10 @@
 # **Find Movies**
 
-<p align="center"><img src="https://res.cloudinary.com/https-bilwifi-github-io-kindev-index-html/image/upload/v1597098182/kda/find-mobile-p_q1ivbi.png?w=100"></p>
-
 Référentiel des films créé avec React js exploitant l'API de [The Movie DB](https://developers.themoviedb.org/).
 - [https://find-movies.vercel.app/](https://find-movies.vercel.app/)
+
+<p align="center"><img src="https://res.cloudinary.com/https-bilwifi-github-io-kindev-index-html/image/upload/v1597098182/kda/find-mobile-p_q1ivbi.png?w=100"></p>
+
 ## **Installation**
 
 ```bash
