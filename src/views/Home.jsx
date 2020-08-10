@@ -1,34 +1,57 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
-import { Dimmer,Loader, Pagination, Icon, Input, Label } from "semantic-ui-react";
+import { Container } from "react-bootstrap";
+import {
+  Dimmer,
+  Loader,
+  Pagination,
+  Icon,
+  Input,
+  Label,
+  Header,
+} from "semantic-ui-react";
 import ListesFilms from "../components/ListesFilms";
 import themoviedb from "../services/api/api.themoviedb";
 import "../assets/scss/home.scss";
-
+const menus = [
+  {
+    title: "News",
+    url: "upcoming",
+  },
+  {
+    title: "Top vu",
+    url: "popular",
+  },
+  {
+    title: "Top classés",
+    url: "top_rated",
+  },
+];
 export default function Home() {
   const [dataMovies, setDataMovies] = useState([]);
   const [typeListMovies, setTypeListMovies] = useState("upcoming");
   const [curentPage, setCurentPage] = useState(1);
   const [titlePage, setTitlePage] = useState("News");
-  const [loading, setLoading] = useState("true");
+  const [loading, setLoading] = useState(true);
+  const [errorModal, setErrorModal] = useState(false);
+
   useEffect(() => {
-    setLoading(true)
-    console.log(loading);
+    setLoading(true);
     themoviedb
       .get(`/movie/${typeListMovies}?page=${curentPage}`)
       .then((response) => {
         setDataMovies(response.data);
-        setLoading(false)
+        setLoading(false);
       })
       .catch((e) => {
-        console.log(e);
+        setLoading(false);
+        setErrorModal(true);
         console.log("une erreure est survenue");
       });
   }, [typeListMovies, curentPage]);
 
   const searchMovies = (e) => {
     const query = e.target.value.trim();
-    if (query.length > 0 && query != "") {
+    if (query.length > 0 && query !== "") {
       setCurentPage(1);
       setTitlePage("Recherche");
       themoviedb
@@ -37,95 +60,95 @@ export default function Home() {
           setDataMovies(response.data);
         })
         .catch((e) => {
-          console.log(e);
           console.log("une erreure est survenue");
+          setErrorModal(true);
         });
     }
   };
   return (
     <>
-      <section className="container">
-        {loading ? (
-          <Dimmer active>
-            <Loader size="huge">Chargement</Loader>
-          </Dimmer>
-        ) : (
-          ""
-        )}
-        <div class="callout callout-danger text-white">
+      <main className="container">
+        <div className="callout callout-danger text-white">
           <h4>Find Movies</h4>
           {titlePage}
         </div>
         <Container fluid="xs">
           <div className=" clearfix">
-            <div className="float-left">
+            <div className="float-sm-left float-none">
               <Label.Group tag>
-                <Label
-                  as="a"
-                  color={titlePage == "News" ? "red" : null}
-                  onClick={(e) => {
-                    setTypeListMovies("upcoming");
-                    setTitlePage("News");
-                  }}
-                >
-                  News
-                </Label>
-                <Label
-                  as="a"
-                  color={titlePage == "Top vu" ? "red" : null}
-                  onClick={(e) => {
-                    setTypeListMovies("popular");
-                    setTitlePage("Top vu");
-                  }}
-                >
-                  Top vu
-                </Label>
-                <Label
-                  as="a"
-                  color={titlePage == "Top classés" ? "red" : null}
-                  onClick={(e) => {
-                    setTypeListMovies("top_rated");
-                    setTitlePage("Top classés");
-                  }}
-                >
-                  Top classés
-                </Label>
+                {menus.map((menu) => {
+                  return(<Label
+                    as="a"
+                    color={titlePage === menu.title ? "red" : null}
+                    onClick={(e) => {
+                      setTypeListMovies(menu.url);
+                      setTitlePage(menu.title);
+                    }}
+                    className="text-decoration-none"
+                    key={menu.title}
+                  >
+                    {menu.title}
+                  </Label>
+                )})}
               </Label.Group>
             </div>
-            <Input
-              icon="search"
-              placeholder="Search..."
-              onChange={searchMovies}
-              className="float-right"
-            />
+            <div className="float-sm-right   text-align-center ">
+              <Input
+                icon="search"
+                placeholder="Search..."
+                onChange={searchMovies}
+                className=" text-align-center"
+                size="mini"
+              />
+            </div>
           </div>
           <br />
-          <div className="">
-            <ListesFilms dataMovies={dataMovies.results} />
-          </div>
-          <div className="text-center">
-            <Pagination
-              defaultActivePage={1}
-              activePage={curentPage}
-              ellipsisItem={null}
-              boundaryRange={1}
-              siblingRange={1}
-              firstItem={null}
-              lastItem={null}
-              size="mini"
-              prevItem={{ content: <Icon name="angle left" />, icon: true }}
-              nextItem={{ content: <Icon name="angle right" />, icon: true }}
-              totalPages={dataMovies.total_pages}
-              onPageChange={(e, { activePage }) => {
-                const value = e.target.attributes.value
-                  ? e.target.attributes.value.value
-                  : 1;
-                setCurentPage(value);
-              }}
+          <div className="container">
+            <ListesFilms
+              dataMovies={dataMovies.results ? dataMovies.results : []}
             />
           </div>
+          <div className="text-center">
+            {dataMovies.total_pages > 20 ? (
+              <Pagination
+                defaultActivePage={1}
+                activePage={curentPage}
+                ellipsisItem={null}
+                boundaryRange={1}
+                siblingRange={1}
+                firstItem={null}
+                lastItem={null}
+                size="mini"
+                prevItem={{ content: <Icon name="angle left" />, icon: true }}
+                nextItem={{ content: <Icon name="angle right" />, icon: true }}
+                totalPages={dataMovies.total_pages}
+                onPageChange={(e, { activePage }) => {
+                  setCurentPage(activePage);
+                  window.scrollTo(0, 0);
+                }}
+              />
+            ) : (
+              ""
+            )}
+          </div>
         </Container>
-      </section>
+      </main>
+      {loading ? (
+        <Dimmer active>
+          <Loader size="huge">Chargement</Loader>
+        </Dimmer>
+      ) : (
+        ""
+      )}
+      <Dimmer active={errorModal}>
+        <Header icon>
+          <Icon name="warning sign" color="red" />
+          <p className="text-danger">
+            Une erreur est survenue, Veillez vérifier votre connexion et
+            actualiser la page !
+          </p>
+        </Header>
+      </Dimmer>
     </>
   );
 }
