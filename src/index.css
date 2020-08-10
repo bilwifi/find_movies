@@ -1,13 +1,25 @@
-body {
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,700,800');
+
+*{
+  box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html, body{
+  height: 100%;
+  background: url(http://subtlepatterns2015.subtlepatterns.netdna-cdn.com/patterns/dark_fish_skin.png);
+  margin: 0;
+  background: black;
+  font-family: 'Montserrat', helvetica, arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+.ui.pagination.menu{
+  background-color: black;
+}
+.ui.menu .item{
+  color:white !important;
+}
+.ui.pagination.menu .active.item{
+  background-color: red;
 }
