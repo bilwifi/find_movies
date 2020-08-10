@@ -56,16 +56,14 @@
     .movie_desc{
       // background-color: yellow;
       padding: 25px;
-      // height: 50%;
+      height: 50%;
       .text{
         color: #cfd6e1;
         max-height: 100px;
       }
       max-height: 120px;
-
-      position: static;
     }
-    .movie_social{
+    .rating{
       height: 10%;
       padding-left: 15px;
       padding-bottom: 20px;
@@ -155,7 +153,5 @@
   }
 }
 
-// .bright_back{
-//   background: url("https://occ-0-2433-448.1.nflxso.net/art/cd5c9/3e192edf2027c536e25bb5d3b6ac93ced77cd5c9.jpg");
-// }
+
 

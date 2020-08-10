@@ -1,12 +1,14 @@
 import React from "react";
-import Header from './Header';
-import Content from "./Content";
+import { Route, Switch } from "react-router-dom";
+import Home from "../views/Home"
 export default function Layout() {
   return (
     <div>
-      {/* <Header /> */}
-      <Content />
-      {/* footer <br /> */}
+      <Switch>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
     </div>
   );
 }
