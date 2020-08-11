@@ -25,7 +25,11 @@
     color: #d9534f;
   }
 }
-
+.header{
+  background-color: black;
+  padding : 10px 5px;
+  box-shadow: 0px 0px 150px -45px rgba(255, 51, 0, 0.5);
+}
 .card-movie{
   transition: all 0.4s;
   &:hover{

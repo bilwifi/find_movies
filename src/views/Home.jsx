@@ -84,8 +84,9 @@ export default function Home() {
           {curentPage}
         </div>
         <Container fluid="xs">
+          <div className="header sticky-top shadow-lg p-3 mb-5  rounded">
           <div className=" clearfix">
-            <div className="float-sm-left float-none">
+            <div className="float-sm-left float-none text-center">
               <MenuTag curentPage={curentPage} switchPage={router} />
             </div>
             <div className="float-sm-right   text-align-center ">
@@ -94,10 +95,11 @@ export default function Home() {
                 placeholder="Rechercher..."
                 onChange={searchMovies}
                 size="mini"
+                className="w-100"
               />
             </div>
           </div>
-          <br />
+          </div>
           <div className="container">
             <ListesFilms
               dataMovies={dataMovies.results ? dataMovies.results : []}
