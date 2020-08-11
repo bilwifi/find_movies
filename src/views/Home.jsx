@@ -1,60 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
-import {
-  Dimmer,
-  Loader,
-  Pagination,
-  Icon,
-  Input,
-  Label,
-  Header,
-} from "semantic-ui-react";
-import ListesFilms from "../components/ListesFilms";
-import ScrollButton from "../components/ScrollTopButton";
 import themoviedb from "../services/api/api.themoviedb";
+import { Container } from "react-bootstrap";
+import { Dimmer, Loader, Icon, Input, Header } from "semantic-ui-react";
+import MenuTag from "../components/MenuTag";
+import ListesFilms from "../components/ListesFilms";
+import Pagination from "../components/Pagination";
+import ScrollButton from "../components/ScrollTopButton";
 import "../assets/scss/home.scss";
-const menus = [
-  {
-    title: "News",
-    url: "upcoming",
-  },
-  {
-    title: "Top vu",
-    url: "popular",
-  },
-  {
-    title: "Top classés",
-    url: "top_rated",
-  },
-];
+
 export default function Home() {
   const [dataMovies, setDataMovies] = useState([]);
-  const [typeListMovies, setTypeListMovies] = useState("upcoming");
-  const [curentPage, setCurentPage] = useState(1);
-  const [titlePage, setTitlePage] = useState("News");
+  const [routeApi, setRouteApi] = useState("upcoming");
+  const [curentPage, setCurentPage] = useState("News");
+  const [curentPagePagination, setCurentPagePagination] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [errorModal, setErrorModal] = useState(false);
+  const [modalError, setModalError] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     themoviedb
-      .get(`/movie/${typeListMovies}?page=${curentPage}`)
+      .get(`/movie/${routeApi}?page=${curentPagePagination}`)
       .then((response) => {
         setDataMovies(response.data);
         setLoading(false);
       })
       .catch((e) => {
         setLoading(false);
-        setErrorModal(true);
+        setModalError(true);
         console.log("une erreure est survenue");
       });
-  }, [typeListMovies, curentPage]);
+  }, [routeApi, curentPagePagination]);
 
   const searchMovies = (e) => {
     const query = e.target.value.trim();
     if (query.length > 0 && query !== "") {
-      setCurentPage(1);
-      setTitlePage("Recherche");
+      setCurentPagePagination(1);
+      setCurentPage("Recherche");
       themoviedb
         .get(`/search/movie?query=${query}&page=${curentPage}`)
         .then((response) => {
@@ -62,43 +43,55 @@ export default function Home() {
         })
         .catch((e) => {
           console.log("une erreure est survenue");
-          setErrorModal(true);
+          setModalError(true);
         });
     }
   };
+  const pagination = (activePage) => {
+    setCurentPage(activePage);
+  };
+  const router = (title, route) => {
+    setRouteApi(route);
+    setCurentPage(title);
+  };
+
+  if(modalError){
+    return (
+      <Dimmer active={modalError}>
+        <Header icon>
+          <Icon name="warning sign" color="red" />
+          <p className="text-danger">
+            Une erreur est survenue, Veillez vérifier votre connexion et
+            actualiser la page !
+          </p>
+        </Header>
+      </Dimmer>
+    )
+  }
+  if (loading) {
+    return (
+      <Dimmer active>
+      <Loader size="huge">Chargement</Loader>
+    </Dimmer>
+    )
+  }
   return (
     <>
       <main className="container">
         <div className="callout callout-danger text-white">
           <h4>Find Movies</h4>
-          {titlePage}
+          {curentPage}
         </div>
         <Container fluid="xs">
           <div className=" clearfix">
             <div className="float-sm-left float-none">
-              <Label.Group tag>
-                {menus.map((menu) => {
-                  return(<Label
-                    as="a"
-                    color={titlePage === menu.title ? "red" : null}
-                    onClick={(e) => {
-                      setTypeListMovies(menu.url);
-                      setTitlePage(menu.title);
-                    }}
-                    className="text-decoration-none"
-                    key={menu.title}
-                  >
-                    {menu.title}
-                  </Label>
-                )})}
-              </Label.Group>
+              <MenuTag curentPage={curentPage} switchPage={router} />
             </div>
             <div className="float-sm-right   text-align-center ">
               <Input
                 icon="search"
-                placeholder="Search..."
+                placeholder="Rechercher..."
                 onChange={searchMovies}
-                className=" text-align-center"
                 size="mini"
               />
             </div>
@@ -110,47 +103,15 @@ export default function Home() {
             />
           </div>
           <div className="text-center">
-            {dataMovies.total_pages > 20 ? (
-              <Pagination
-                defaultActivePage={1}
-                activePage={curentPage}
-                ellipsisItem={null}
-                boundaryRange={1}
-                siblingRange={1}
-                firstItem={null}
-                lastItem={null}
-                size="mini"
-                prevItem={{ content: <Icon name="angle left" />, icon: true }}
-                nextItem={{ content: <Icon name="angle right" />, icon: true }}
-                totalPages={dataMovies.total_pages}
-                onPageChange={(e, { activePage }) => {
-                  setCurentPage(activePage);
-                  window.scrollTo(0, 0);
-                }}
-              />
-            ) : (
-              ""
-            )}
+            <Pagination
+              activePage={curentPagePagination}
+              totalPages={dataMovies.total_pages}
+              setActivePage={pagination}
+            />
           </div>
         </Container>
       </main>
-      {loading ? (
-        <Dimmer active>
-          <Loader size="huge">Chargement</Loader>
-        </Dimmer>
-      ) : (
-        ""
-      )}
-      <Dimmer active={errorModal}>
-        <Header icon>
-          <Icon name="warning sign" color="red" />
-          <p className="text-danger">
-            Une erreur est survenue, Veillez vérifier votre connexion et
-            actualiser la page !
-          </p>
-        </Header>
-      </Dimmer>
-      <ScrollButton/>
+      <ScrollButton />
     </>
   );
 }
