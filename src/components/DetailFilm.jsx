@@ -4,14 +4,14 @@ import themoviedb from "../services/api/api.themoviedb";
 import styled from "styled-components";
 import "../assets/scss/detailFilm.scss";
 
-export default function DetailFilm({ idMovie,close }) {
+export default function DetailFilm({ id, close }) {
   const [infoMovie, setInfoMovie] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [show, setShow] = useState(true);
   const [errorModal, setErrorModal] = useState(false);
+
   useEffect(() => {
     themoviedb
-      .get(`/movie/${idMovie}`)
+      .get(`/movie/${id}`)
       .then((response) => {
         setInfoMovie(response.data);
         setLoading(false);
@@ -20,25 +20,48 @@ export default function DetailFilm({ idMovie,close }) {
         setErrorModal(true);
         console.log("une erreure est survenue");
       });
-  }, []);
+  }, [id]);
+
   const Banner = styled.div`
     background: url(${infoMovie.backdrop_path
       ? "https://image.tmdb.org/t/p/w500/" + infoMovie.backdrop_path
       : "https://semantic-ui.com/images/wireframe/image.png"});
   `;
+
+  if (loading) {
+    return (
+      <Dimmer active={loading}>
+        <Loader size="huge">Chargement</Loader>
+      </Dimmer>
+    );
+  }
+  if (errorModal) {
+    return (
+      <Dimmer active={errorModal}>
+        <Header icon>
+          <Icon name="warning sign" color="red" />
+          <p className="text-danger">
+            Une erreur est survenue, Veillez vérifier votre connexion et
+            actualiser la page !
+          </p>
+        </Header>
+      </Dimmer>
+    );
+  }
+
   return (
     <>
       <div className="text-left">
-        {loading ? (
-          <Dimmer active={show}>
-            <Loader size="huge">Chargement</Loader>
-          </Dimmer>
-        ) : (
-          ""
-        )}
         <div className="movie_card" id="bright">
           <div className="info_section">
-            <div class="close-btn" onClick={((e)=>{close()})}><span className="circle">X</span></div>
+            <div
+              class="close-btn"
+              onClick={(e) => {
+                close();
+              }}
+            >
+              <span className="circle">X</span>
+            </div>
             <div className="movie_header">
               <img
                 className="locandina"
@@ -85,15 +108,6 @@ export default function DetailFilm({ idMovie,close }) {
           <Banner className="blur_back bright_back"></Banner>
         </div>
       </div>
-      <Dimmer active={errorModal}>
-        <Header icon>
-          <Icon name="warning sign" color="red" />
-          <p className="text-danger">
-            Une erreur est survenue, Veillez vérifier votre connexion et
-            actualiser la page !
-          </p>
-        </Header>
-      </Dimmer>
     </>
   );
 }

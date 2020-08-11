@@ -65,7 +65,7 @@ function ListesFilms({ dataMovies }) {
         onClickOutside={(e) => setViewDetail(false)}
         page
       >
-        <DetailFilm idMovie={movieSelected} close={closeViewDetail} />
+        <DetailFilm id={movieSelected} close={closeViewDetail} />
       </Dimmer>
     </>
   );
