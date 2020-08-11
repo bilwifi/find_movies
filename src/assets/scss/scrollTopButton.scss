@@ -1,0 +1,32 @@
+.scrollTop { 
+    opacity: 0.3;
+    background-color: red;
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    bottom: 10px;
+    right: 15px;
+    border-radius: 5px;
+    border: none;
+    
+    &:hover {
+      opacity: 1;
+    }
+  }
+  
+  .arrow-up {
+    color: white;
+    position: absolute;
+    top: 25%;
+    left: 25%;
+    
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0.5;
+    }
+  }

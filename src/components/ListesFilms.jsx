@@ -8,6 +8,7 @@ function ListesFilms({ dataMovies }) {
   const [viewDetail, setViewDetail] = useState(false);
   const [movieSelected, setMovieSelected] = useState("");
 
+  const closeViewDetail = () => setViewDetail(false)
   return (
     <>
       <Row>
@@ -64,7 +65,7 @@ function ListesFilms({ dataMovies }) {
         onClickOutside={(e) => setViewDetail(false)}
         page
       >
-        <DetailFilm idMovie={movieSelected} />
+        <DetailFilm idMovie={movieSelected} close={closeViewDetail} />
       </Dimmer>
     </>
   );

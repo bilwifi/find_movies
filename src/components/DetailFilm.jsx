@@ -4,9 +4,10 @@ import themoviedb from "../services/api/api.themoviedb";
 import styled from "styled-components";
 import "../assets/scss/detailFilm.scss";
 
-export default function DetailFilm({ idMovie }) {
+export default function DetailFilm({ idMovie,close }) {
   const [infoMovie, setInfoMovie] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [show, setShow] = useState(true);
   const [errorModal, setErrorModal] = useState(false);
   useEffect(() => {
     themoviedb
@@ -29,7 +30,7 @@ export default function DetailFilm({ idMovie }) {
     <>
       <div className="text-left">
         {loading ? (
-          <Dimmer active>
+          <Dimmer active={show}>
             <Loader size="huge">Chargement</Loader>
           </Dimmer>
         ) : (
@@ -37,6 +38,7 @@ export default function DetailFilm({ idMovie }) {
         )}
         <div className="movie_card" id="bright">
           <div className="info_section">
+            <div class="close-btn" onClick={((e)=>{close()})}><span className="circle">X</span></div>
             <div className="movie_header">
               <img
                 className="locandina"

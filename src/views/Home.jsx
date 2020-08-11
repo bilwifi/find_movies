@@ -10,6 +10,7 @@ import {
   Header,
 } from "semantic-ui-react";
 import ListesFilms from "../components/ListesFilms";
+import ScrollButton from "../components/ScrollTopButton";
 import themoviedb from "../services/api/api.themoviedb";
 import "../assets/scss/home.scss";
 const menus = [
@@ -149,6 +150,7 @@ export default function Home() {
           </p>
         </Header>
       </Dimmer>
+      <ScrollButton/>
     </>
   );
 }
