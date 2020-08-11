@@ -34,12 +34,13 @@ export default function Home() {
   const searchMovies = (e) => {
     const query = e.target.value.trim();
     if (query.length > 0 && query !== "") {
-      setCurentPagePagination(1);
       setCurentPage("Recherche");
       themoviedb
-        .get(`/search/movie?query=${query}&page=${curentPagePagination}`)
+        .get(`/search/movie?query=${query}&page=1`)
         .then((response) => {
-          setDataMovies(response.data);
+          const data = response.data;
+          data.total_pages = -1;
+          setDataMovies(data);
         })
         .catch((e) => {
           console.log("une erreure est survenue");
@@ -48,7 +49,7 @@ export default function Home() {
     }
   };
   const pagination = (activePage) => {
-    setCurentPage(activePage);
+    setCurentPagePagination(activePage);
   };
   const router = (title, route) => {
     setRouteApi(route);
