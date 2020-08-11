@@ -84,7 +84,7 @@ export default function Home() {
           {curentPage}
         </div>
         <Container fluid="xs">
-          <div className="header sticky-top shadow-lg p-3 mb-5  rounded">
+          <div className="header-fixed  shadow-lg p-3 mb-5  rounded" >
           <div className=" clearfix">
             <div className="float-sm-left float-none text-center">
               <MenuTag curentPage={curentPage} switchPage={router} />

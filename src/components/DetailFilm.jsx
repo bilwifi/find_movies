@@ -51,7 +51,7 @@ export default function DetailFilm({ id, close }) {
 
   return (
     <>
-      <div className="text-left">
+      <div className="text-left " >
         <div className="movie_card" id="bright">
           <div className="info_section">
             <div
