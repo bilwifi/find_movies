@@ -4,7 +4,7 @@ Référentiel des films créé avec React js exploitant l'API de [The Movie DB](
 - [https://find-movies.vercel.app/](https://find-movies.vercel.app/)
 
 
-<p align="center"><img src="https://res.cloudinary.com/penieldialu/image/upload/v1597098186/kda/find-movies_rks49d.png"></p>
+<p align="center"><img src="https://res.cloudinary.com/penieldialu/image/upload/v1597098182/kda/find-mobile-p_q1ivbi.png"></p>
 
 ## **Installation**
 
